@@ -64,8 +64,7 @@ function create_course_posttype() {
 }
 
 
-// The CPT INIT hooks
-add_action( 'init', 'create_event_posttype', 0 );
+// The CPT INIT hook
 add_action( 'init', 'create_course_posttype', 0 );
 
 
