@@ -84,7 +84,6 @@ function create_course_posttype() {
 		'name'                => _x( 'Courses', 'Post Type General Name' ),
 		'singular_name'       => _x( 'Course', 'Post Type Singular Name' ),
 		'menu_name'           => __( 'Courses' ),
-		'parent_item_colon'   => __( 'Parent Course' ),
 		'all_items'           => __( 'All Courses' ),
 		'view_item'           => __( 'View Courses' ),
 		'add_new_item'        => __( 'Add New Course' ),
@@ -133,7 +132,59 @@ function create_course_posttype() {
 add_action( 'init', 'create_course_posttype', 0 );
 
 
+// "STAFF" Custom Post Type
+function create_staff_posttype() {
 
+// Set UI labels for Course CPT
+  $labels = array(
+    'name'                => _x( 'Staff', 'Post Type General Name' ),
+    'singular_name'       => _x( 'Staff', 'Post Type Singular Name' ),
+    'menu_name'           => __( 'Staff' ),
+    'all_items'           => __( 'All Staff' ),
+    'view_item'           => __( 'View Staff' ),
+    'add_new_item'        => __( 'Add New Staff' ),
+    'add_new'             => __( 'Add New' ),
+    'edit_item'           => __( 'Edit Staff' ),
+    'update_item'         => __( 'Update Staff' ),
+    'search_items'        => __( 'Search Staff' ),
+    'not_found'           => __( 'Not Found' ),
+    'not_found_in_trash'  => __( 'Not found in Trash' ),
+  );
+  
+// Set options for Staff CPT 
+  $args = array(
+    'label'               => __( 'staff' ),
+    'description'         => __( 'IES Staff list' ),
+    'labels'              => $labels,
+    // Features this CPT supports in Post Editor
+    'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
+    // You can associate this CPT with a taxonomy or custom taxonomy. 
+    'taxonomies'          => array( 'industry', 'location' ),
+    /* A hierarchical CPT is like Pages and can have
+    * Parent and child items. A non-hierarchical CPT
+    * is like Posts.
+    */  
+    'hierarchical'        => false,
+    'public'              => true,
+    'show_ui'             => true,
+    'show_in_menu'        => true,
+    'show_in_nav_menus'   => true,
+    'show_in_admin_bar'   => true,
+    'menu_position'       => 6,
+    'can_export'          => true,
+    'has_archive'         => true,
+    'exclude_from_search' => false,
+    'publicly_queryable'  => true,
+    'capability_type'     => 'post', //or page
+  );
+
+// Register Staff CPT
+  register_post_type( 'staff', $args );
+
+}
+
+// The CPT INIT hook
+add_action( 'init', 'create_staff_posttype', 0 );
 
 
 /* Attach custom taxonomies "Location" & "Industry" to pages content type
