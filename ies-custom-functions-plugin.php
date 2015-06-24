@@ -7,6 +7,71 @@ Author: ncjones4@ncsu.edu
 */
 
 
+
+/***************************************
+* Create IES custom taxonomies Functions
+* Note: Register taxos first so Courses
+* CPT has them when created below
+****************************************/
+function add_custom_taxonomies() {
+// Add new "LOCATIONS" taxonomy to ALL Posts types
+  register_taxonomy('location', 'post', array(
+    // Hierarchical taxonomy (like categories)
+    'hierarchical' => true,
+    // This array of options controls the labels displayed in the WordPress Admin UI
+    'labels' => array(
+      'name' => _x( 'Locations', 'taxonomy general name' ),
+      'singular_name' => _x( 'Location', 'taxonomy singular name' ),
+      'search_items' =>  __( 'Search Locations' ),
+      'all_items' => __( 'All Locations' ),
+      'parent_item' => __( 'Parent Location' ),
+      'parent_item_colon' => __( 'Parent Location:' ),
+      'edit_item' => __( 'Edit Location' ),
+      'update_item' => __( 'Update Location' ),
+      'add_new_item' => __( 'Add New Location' ),
+      'new_item_name' => __( 'New Location Name' ),
+      'menu_name' => __( 'Locations' ),
+    ),
+    // Control the slugs used for this taxonomy
+    'rewrite' => array(
+      'slug' => 'locations', // This controls the base slug that will display before each term
+      'with_front' => false, // Don't display the category base before "/locations/"
+      'hierarchical' => true // This will allow URL's like "/locations/boston/cambridge/"
+    ),
+  ));
+
+// Add new "INDUSTRY" taxonomy to ALL Posts types
+  register_taxonomy('industry', 'post', array(
+    // Hierarchical taxonomy (like categories)
+    'hierarchical' => true,
+    // This array of options controls the labels displayed in the WordPress Admin UI
+    'labels' => array(
+      'name' => _x( 'Industry', 'taxonomy general name' ),
+      'singular_name' => _x( 'Industry', 'taxonomy singular name' ),
+      'search_items' =>  __( 'Search Industries' ),
+      'all_items' => __( 'All Industries' ),
+      'parent_item' => __( 'Parent Industry' ),
+      'parent_item_colon' => __( 'Parent Industry:' ),
+      'edit_item' => __( 'Edit Industry' ),
+      'update_item' => __( 'Update Industry' ),
+      'add_new_item' => __( 'Add New Industry' ),
+      'new_item_name' => __( 'New Industry Name' ),
+      'menu_name' => __( 'Industries' ),
+    ),
+    // Control slugs used for this taxonomy
+    'rewrite' => array(
+      'slug' => 'industry', // This controls the base slug that will display before each term
+      'with_front' => false, // Don't display the category base before "/locations/"
+      'hierarchical' => true // This will allow URL's like "/locations/boston/cambridge/"
+    ),
+  ));
+
+} // End taxonomies
+
+// The custom taxonomy INIT hook
+add_action( 'init', 'add_custom_taxonomies', 0 );
+
+
 /******************************
 * Create the IES CPTs Functions
 *******************************/
@@ -69,70 +134,9 @@ add_action( 'init', 'create_course_posttype', 0 );
 
 
 
-/***************************************
-* Create IES custom taxonomies Functions
-****************************************/
-function add_custom_taxonomies() {
-// Add new "LOCATIONS" taxonomy to ALL Posts types
-  register_taxonomy('location', 'post', array(
-    // Hierarchical taxonomy (like categories)
-    'hierarchical' => true,
-    // This array of options controls the labels displayed in the WordPress Admin UI
-    'labels' => array(
-      'name' => _x( 'Locations', 'taxonomy general name' ),
-      'singular_name' => _x( 'Location', 'taxonomy singular name' ),
-      'search_items' =>  __( 'Search Locations' ),
-      'all_items' => __( 'All Locations' ),
-      'parent_item' => __( 'Parent Location' ),
-      'parent_item_colon' => __( 'Parent Location:' ),
-      'edit_item' => __( 'Edit Location' ),
-      'update_item' => __( 'Update Location' ),
-      'add_new_item' => __( 'Add New Location' ),
-      'new_item_name' => __( 'New Location Name' ),
-      'menu_name' => __( 'Locations' ),
-    ),
-    // Control the slugs used for this taxonomy
-    'rewrite' => array(
-      'slug' => 'locations', // This controls the base slug that will display before each term
-      'with_front' => false, // Don't display the category base before "/locations/"
-      'hierarchical' => true // This will allow URL's like "/locations/boston/cambridge/"
-    ),
-  ));
-
-// Add new "INDUSTRY" taxonomy to ALL Posts types
-  register_taxonomy('industry', 'post', array(
-    // Hierarchical taxonomy (like categories)
-    'hierarchical' => true,
-    // This array of options controls the labels displayed in the WordPress Admin UI
-    'labels' => array(
-      'name' => _x( 'Industry', 'taxonomy general name' ),
-      'singular_name' => _x( 'Industry', 'taxonomy singular name' ),
-      'search_items' =>  __( 'Search Industries' ),
-      'all_items' => __( 'All Industries' ),
-      'parent_item' => __( 'Parent Industry' ),
-      'parent_item_colon' => __( 'Parent Industry:' ),
-      'edit_item' => __( 'Edit Industry' ),
-      'update_item' => __( 'Update Industry' ),
-      'add_new_item' => __( 'Add New Industry' ),
-      'new_item_name' => __( 'New Industry Name' ),
-      'menu_name' => __( 'Industries' ),
-    ),
-    // Control slugs used for this taxonomy
-    'rewrite' => array(
-      'slug' => 'industry', // This controls the base slug that will display before each term
-      'with_front' => false, // Don't display the category base before "/locations/"
-      'hierarchical' => true // This will allow URL's like "/locations/boston/cambridge/"
-    ),
-  ));
-
-} // End taxonomies
-
-// The custom taxonomy INIT hook
-add_action( 'init', 'add_custom_taxonomies', 0 );
 
 
-
-/* Attach custom taxonomies "Location" & "Industry" to pages
+/* Attach custom taxonomies "Location" & "Industry" to pages content type
 * From Plugin Name: Post Tags and Categories for Pages
 * Plugin URI: http://wpthemetutorial.com/plugins/post-tags-and-categories-for-pages/
 * Description: Simply adds the stock Categories and Post Tags to your Pages.
@@ -176,9 +180,6 @@ class PTCFP{
       register_taxonomy_for_object_type( 'category', 'page' );
      // Give IES custom Industry taxonomy to pages too
       register_taxonomy_for_object_type( 'industry', 'page' ); 
-    // Give Industry and Location to the Courses CPT
-       register_taxonomy_for_object_type( 'industry', 'course' ); 
-       register_taxonomy_for_object_type( 'location', 'course' );
   } // taxonomies_for_pages
 
   /**
