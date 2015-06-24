@@ -176,6 +176,9 @@ class PTCFP{
       register_taxonomy_for_object_type( 'category', 'page' );
      // Give IES custom Industry taxonomy to pages too
       register_taxonomy_for_object_type( 'industry', 'page' ); 
+    // Give Industry and Location to the Courses CPT
+       register_taxonomy_for_object_type( 'industry', 'course' ); 
+       register_taxonomy_for_object_type( 'location', 'course' );
   } // taxonomies_for_pages
 
   /**
