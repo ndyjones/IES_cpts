@@ -2,7 +2,7 @@
 /*
 Plugin Name: IES CPT-etc Site Plugin for ies.ncsu.edu
 Description: Site specific code changes for ies.ncsu.edu
-Version: 0.1
+Version: 1.0.1
 Author: ncjones4@ncsu.edu
 */
 
@@ -268,6 +268,50 @@ class PTCFP{
 } // PTCFP
 
 $ptcfp = new PTCFP();
+
+/*** Add Related Posts by Taxonomy Plugin Custom Filters
+*  mainly limit all shortcode Related Posts to Solutions category posts
+*  plugin info: http://keesiemeijer.wordpress.com/related-posts-by-taxonomy/
+*/
+
+add_filter( 'related_posts_by_taxonomy_shortcode_atts', 'related_posts_exclude_terms_strict' );
+
+function related_posts_exclude_terms_strict( $args ) {
+  global $wpdb;
+
+  if ( empty( $args['exclude_terms'] )  ) {
+    return $args;
+  }
+
+  // sanitize the excluded terms
+  $exclude_terms = explode( ',', (string) $args['exclude_terms'] );
+  $exclude_terms = array_filter( array_map( 'intval', $exclude_terms ) );
+  $exclude_terms = array_values( array_unique( $exclude_terms ) );
+
+  $term_ids_sql = "tt.term_id IN (" . implode( ', ', $exclude_terms ) . ")";
+
+  $query = "
+    SELECT p.ID FROM $wpdb->posts p
+    LEFT JOIN $wpdb->term_relationships t ON (p.ID = t.object_id)
+    WHERE exists (
+          SELECT tt.term_taxonomy_id FROM $wpdb->term_taxonomy tt
+          WHERE tt.term_taxonomy_id = t.term_taxonomy_id
+          and {$term_ids_sql}
+      ) GROUP BY p.ID
+  ";
+
+  // get post ids with the excluded terms
+  $results = $wpdb->get_col( $query );
+
+  if ( !empty( $results ) ) {
+    $args['exclude_posts'] = $results;
+  }
+
+  // return arguments with the excluded posts
+  return $args;
+}
+
+
 
 
 /**** END  ****/

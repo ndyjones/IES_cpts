@@ -1,7 +1,8 @@
 # IES Custom Post types and Taxonomies
-A Custom post types &amp; taxonomies plugin for use on NC State Itecs multi-site wordpress enviroment.
+A Custom post types &amp; taxonomies plugin for use by Industry Expansion Solutions on NC State Itecs multi-site wordpress enviroment.
 ## Post Types
   Courses
+  Staff
   
 ## Taxonomies
   * Industries
@@ -14,3 +15,11 @@ Uses Post Tags and Categories for Pages plugin (http://wpthemetutorial.com/plugi
 ##Contact
 
 Contact Nicolle Jones, NC State Univeristy (nicolle_jones@ncsu.edu) for information or questions.
+
+== Changelog ==
+
+= 1.0.1 = 
+* Added support for tags to Courses custom post type.
+
+= 1.0 =
+Initial release
