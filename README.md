@@ -20,6 +20,9 @@ Contact Nicolle Jones, NC State Univeristy (nicolle_jones@ncsu.edu) for informat
 
 == Changelog ==
 
+= 1.0.3 =
+* Added meta fields to wp search query to try and fix the custom course search.
+
 = 1.0.2 =
 * Moved the Orderby Taxonomy Term Name filter to the plugin file as it's used for the IES Specific custom taxonomies and cpts.
 * Added Courses cpt filter to return course-search.php for all 'courses' post_type wp_query searches.
