@@ -2,7 +2,7 @@
 /*
 Plugin Name: IES CPT-etc Site Plugin for ies.ncsu.edu
 Description: Site specific code changes for ies.ncsu.edu
-Version: 1.0.1
+Version: 1.0.4
 Author: ncjones4@ncsu.edu
 */
 
@@ -100,6 +100,7 @@ function create_course_posttype() {
 		'label'               => __( 'courses' ),
 		'description'         => __( 'Course and Professional Development offerings' ),
 		'labels'              => $labels,
+    'menu_icon'          => 'dashicons-list-view',
 		// Features this CPT supports in Post Editor
 		'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', 'tags', ),
 		// You can associate this CPT with a taxonomy or custom taxonomy. 
@@ -156,6 +157,7 @@ function create_staff_posttype() {
     'label'               => __( 'staff' ),
     'description'         => __( 'IES Staff list' ),
     'labels'              => $labels,
+    'menu_icon'          => 'dashicons-admin-users',
     // Features this CPT supports in Post Editor
     'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
     // You can associate this CPT with a taxonomy or custom taxonomy. 
@@ -185,6 +187,7 @@ function create_staff_posttype() {
 
 // The CPT INIT hook
 add_action( 'init', 'create_staff_posttype', 0 );
+
 
 
 /* Attach custom taxonomies "Location" & "Industry" to pages content type
@@ -309,6 +312,30 @@ function related_posts_exclude_terms_strict( $args ) {
 
   // return arguments with the excluded posts
   return $args;
+}
+
+
+
+//WP Query Orderby Taxonomy Term Name 
+// from https://gist.github.com/jayarnielsen/12f3a586900aa6759639
+
+add_filter('posts_clauses', 'posts_clauses_with_tax', 10, 2);
+function posts_clauses_with_tax( $clauses, $wp_query ) {
+  global $wpdb;
+  //array of sortable taxonomies
+  $taxonomies = array('location', 'industry');
+  if (isset($wp_query->query['orderby']) && in_array($wp_query->query['orderby'], $taxonomies)) {
+    $clauses['join'] .= "
+      LEFT OUTER JOIN {$wpdb->term_relationships} AS rel2 ON {$wpdb->posts}.ID = rel2.object_id
+      LEFT OUTER JOIN {$wpdb->term_taxonomy} AS tax2 ON rel2.term_taxonomy_id = tax2.term_taxonomy_id
+      LEFT OUTER JOIN {$wpdb->terms} USING (term_id)
+    ";
+    $clauses['where'] .= " AND (taxonomy = '{$wp_query->query['orderby']}' OR taxonomy IS NULL)";
+    $clauses['groupby'] = "rel2.object_id";
+    $clauses['orderby']  = "GROUP_CONCAT({$wpdb->terms}.name ORDER BY name ASC) ";
+    $clauses['orderby'] .= ( 'ASC' == strtoupper( $wp_query->get('order') ) ) ? 'ASC' : 'DESC';
+  }
+  return $clauses;
 }
 
 
