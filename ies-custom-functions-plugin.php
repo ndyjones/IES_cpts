@@ -2,7 +2,7 @@
 /*
 Plugin Name: IES CPT-etc Site Plugin for ies.ncsu.edu
 Description: Site specific code changes for ies.ncsu.edu
-Version: 1.0.3
+Version: 1.0.4
 Author: ncjones4@ncsu.edu
 */
 
@@ -188,128 +188,6 @@ function create_staff_posttype() {
 // The CPT INIT hook
 add_action( 'init', 'create_staff_posttype', 0 );
 
-/*
-//Repurpose Divi Project cpt for IES Solutions
-function child_et_pb_register_posttypes() {
-    $labels = array(
-        'add_new' => __( 'Add New', 'Divi' ),
-        'add_new_item'       => __( 'Add New Solution', 'Divi' ),
-        'all_items'          => __( 'All Solutions', 'Divi' ),
-        'edit_item'          => __( 'Edit Solution', 'Divi' ),
-        'menu_name'          => __( 'Solutions', 'Divi' ),
-        'name'               => __( 'Solutions', 'Divi' ),
-        'new_item'           => __( 'New Solution', 'Divi' ),
-        'not_found'          => __( 'Nothing found', 'Divi' ),
-        'not_found_in_trash' => __( 'Nothing found in Trash', 'Divi' ),
-        'parent_item_colon'  => '',
-        'search_items'       => __( 'Search Solutions', 'Divi' ),
-        'singular_name'      => __( 'Solution', 'Divi' ),
-        'view_item'          => __( 'View Solution', 'Divi' ),
-    );
-
-    $args = array(
-        'can_export'         => true,
-        'capability_type'    => 'post',
-        'has_archive'        => true,
-        'hierarchical'       => false,
-        'labels'             => $labels,
-        'menu_icon'          => 'dashicons-admin-page',
-        'menu_position'      => 5,
-        'public'             => true,
-        'publicly_queryable' => true,
-        'query_var'          => true,
-        'show_in_nav_menus'  => true,
-        'show_ui'            => true,
-        'rewrite'            => apply_filters( 'et_project_posttype_rewrite_args', array(
-            'feeds'          => true,
-            'slug'           => 'solution',
-            'with_front'     => false,
-        )),
-        'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions', 'custom-fields' ),
-    );
-
-    register_post_type( 'project', apply_filters( 'et_project_posttype_args', $args ) );
-
-    $labels = array(
-        'name'              => _x( 'Categories', 'Solution category name', 'Divi' ),
-        'singular_name'     => _x( 'Category', 'Solution category singular name', 'Divi' ),
-        'search_items'      => __( 'Search Categories', 'Divi' ),
-        'all_items'         => __( 'All Categories', 'Divi' ),
-        'parent_item'       => __( 'Parent Category', 'Divi' ),
-        'parent_item_colon' => __( 'Parent Category:', 'Divi' ),
-        'edit_item'         => __( 'Edit Category', 'Divi' ),
-        'update_item'       => __( 'Update Category', 'Divi' ),
-        'add_new_item'      => __( 'Add New Category', 'Divi' ),
-        'new_item_name'     => __( 'New Category Name', 'Divi' ),
-        'menu_name'         => __( 'Categories', 'Divi' ),
-    );
-
-    register_taxonomy( 'project_category', array( 'project' ), array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-    ) );
-
-    $labels = array(
-        'name'              => _x( 'Tags', 'Solution Tag name', 'Divi' ),
-        'singular_name'     => _x( 'Tag', 'Solution tag singular name', 'Divi' ),
-        'search_items'      => __( 'Search Tags', 'Divi' ),
-        'all_items'         => __( 'All Tags', 'Divi' ),
-        'parent_item'       => __( 'Parent Tag', 'Divi' ),
-        'parent_item_colon' => __( 'Parent Tag:', 'Divi' ),
-        'edit_item'         => __( 'Edit Tag', 'Divi' ),
-        'update_item'       => __( 'Update Tag', 'Divi' ),
-        'add_new_item'      => __( 'Add New Tag', 'Divi' ),
-        'new_item_name'     => __( 'New Tag Name', 'Divi' ),
-        'menu_name'         => __( 'Tags', 'Divi' ),
-    );
-
-    register_taxonomy( 'project_tag', array( 'project' ), array(
-        'hierarchical'      => false,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'query_var'         => true,
-    ) );
-
-    $labels = array(
-        'name'               => _x( 'Layouts', 'Layout type general name', 'Divi' ),
-        'singular_name'      => _x( 'Layout', 'Layout type singular name', 'Divi' ),
-        'add_new'            => _x( 'Add New', 'Layout item', 'Divi' ),
-        'add_new_item'       => __( 'Add New Layout', 'Divi' ),
-        'edit_item'          => __( 'Edit Layout', 'Divi' ),
-        'new_item'           => __( 'New Layout', 'Divi' ),
-        'all_items'          => __( 'All Layouts', 'Divi' ),
-        'view_item'          => __( 'View Layout', 'Divi' ),
-        'search_items'       => __( 'Search Layouts', 'Divi' ),
-        'not_found'          => __( 'Nothing found', 'Divi' ),
-        'not_found_in_trash' => __( 'Nothing found in Trash', 'Divi' ),
-        'parent_item_colon'  => '',
-    );
-
-    $args = array(
-        'labels'             => $labels,
-        'public'             => false,
-        'can_export'         => true,
-        'query_var'          => false,
-        'has_archive'        => false,
-        'capability_type'    => 'post',
-        'hierarchical'       => false,
-        'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions', 'custom-fields' ),
-    );
-
-    register_post_type( 'et_pb_layout', apply_filters( 'et_pb_layout_args', $args ) );
-}
-
-function remove_et_pb_actions() {
-    remove_action( 'init', 'et_pb_register_posttypes', 15 );
-}
-
-add_action( 'init', 'remove_et_pb_actions');
-add_action( 'init', 'child_et_pb_register_posttypes', 20 );
-*/
 
 
 /* Attach custom taxonomies "Location" & "Industry" to pages content type
@@ -460,63 +338,6 @@ function posts_clauses_with_tax( $clauses, $wp_query ) {
   return $clauses;
 }
 
-
-//Add meta fields to wp search 
-/**
- * Extend WordPress search to include custom fields
- *
- * http://adambalee.com
- */
-
-/**
- * Join posts and postmeta tables
- *
- * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_join
- */
-function cf_search_join( $join ) {
-    global $wpdb;
-
-    if ( is_search() ) {    
-        $join .=' LEFT JOIN '.$wpdb->postmeta. ' ON '. $wpdb->posts . '.ID = ' . $wpdb->postmeta . '.post_id ';
-    }
-    
-    return $join;
-}
-add_filter('posts_join', 'cf_search_join' );
-
-/**
- * Modify the search query with posts_where
- *
- * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_where
- */
-function cf_search_where( $where ) {
-    global $pagenow, $wpdb;
-   
-    if ( is_search() ) {
-        $where = preg_replace(
-            "/\(\s*".$wpdb->posts.".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
-            "(".$wpdb->posts.".post_title LIKE $1) OR (".$wpdb->postmeta.".meta_value LIKE $1)", $where );
-    }
-
-    return $where;
-}
-add_filter( 'posts_where', 'cf_search_where' );
-
-/**
- * Prevent duplicates
- *
- * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_distinct
- */
-function cf_search_distinct( $where ) {
-    global $wpdb;
-
-    if ( is_search() ) {
-        return "DISTINCT";
-    }
-
-    return $where;
-}
-add_filter( 'posts_distinct', 'cf_search_distinct' );
 
 
 
